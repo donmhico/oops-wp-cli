@@ -1,0 +1,24 @@
+{
+    "name": "donmhico/oops-wp-cli",
+    "description": "",
+    "type": "wp-cli-package",
+    "homepage": "https://github.com/donmhico/oops-wp-cli",
+    "license": "MIT",
+    "authors": [],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": [
+            "oops-command.php"
+        ]
+    },
+    "require": {
+        "wp-cli/wp-cli": "^2.3.0"
+    },
+    "require-dev": {
+        "behat/behat": "~2.5"
+    }
+}
