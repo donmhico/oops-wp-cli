@@ -29,6 +29,11 @@
         "phpcs": "run-phpcs-tests",
         "phpunit": "run-php-unit-tests",
         "prepare-tests": "install-package-tests",
+        "client-test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit"
+        ],
         "test": [
             "@lint",
             "@phpcs",

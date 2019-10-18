@@ -10,5 +10,10 @@
   "homepage": "https://github.com/donmhico/oops-wp-cli/",
   "devDependencies": {
     "husky": "^3.0.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "composer client-test"
+    }
   }
 }

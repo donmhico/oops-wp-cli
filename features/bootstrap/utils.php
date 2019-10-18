@@ -458,7 +458,7 @@ function run_mysql_command( $cmd, $assoc_args, $descriptors = null ) {
 	}
 
 	if ( isset( $assoc_args['host'] ) ) {
-		// phpcs:ignore WordPress.DB.RestrictedFunctions.mysql_mysql_host_to_cli_args -- Misidentified as PHP native MySQL function.
+		// phpcs:ignore
 		$assoc_args = array_merge( $assoc_args, mysql_host_to_cli_args( $assoc_args['host'] ) );
 	}
 
