@@ -7,7 +7,7 @@ donmhico/oops-wp-cli
 
 ## TODO
 - [X] Add immediate TODOs in README.
-- [ ] Create pre-commit hooks for gate-keeping (linting, unit tests, etc).
+- [X] Create pre-commit hooks for gate-keeping (linting, unit tests, etc).
 - [ ] Setup CI/CD (explore GitHub Actions or CircleCI).
 - [ ] Notification to slack when a commit / PR is merged to master branch.
 - [ ] Document how to contribute.
