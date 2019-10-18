@@ -1,0 +1,39 @@
+name: Oops WP CLI Test Suite
+
+on:
+  pull_request:
+    branches:
+      - master
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Download WP Core
+        run: $GITHUB_WORKSPACE/vendor/bin/wp core download --path=wp
+        working-directory: ../
+
+      - name: Create WP config file
+        run: $GITHUB_WORKSPACE/vendor/bin/wp config create --dbname=wpdb --dbuser=root --dbpass=root
+        working-directory: ../wp
+
+      - name: "Create a database"
+        run: mysql --user=root --password=root -e "CREATE DATABASE wpdb;"
+
+      - name: Install WP
+        run: $GITHUB_WORKSPACE/vendor/bin/wp core install --url=example.com --title=Test --admin_user=admintest --admin_email=admin@example.com
+        working-directory: ../wp
+
+      - name: Run test suite
+        run: composer test
