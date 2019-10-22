@@ -28,12 +28,15 @@ jobs:
         run: $GITHUB_WORKSPACE/vendor/bin/wp config create --dbname=wpdb --dbuser=root --dbpass=root
         working-directory: ../wp
 
-      - name: "Create a database"
+      - name: "Create WP database"
         run: mysql --user=root --password=root -e "CREATE DATABASE wpdb;"
 
       - name: Install WP
         run: $GITHUB_WORKSPACE/vendor/bin/wp core install --url=example.com --title=Test --admin_user=admintest --admin_email=admin@example.com
         working-directory: ../wp
+
+      - name: "Create database user for behat tests"
+        run: mysql --user=root --password=root -e "CREATE USER 'wp_cli_test'@'localhost' IDENTIFIED BY 'password1';GRANT ALL PRIVILEGES ON wp_cli_test.* TO 'wp_cli_test'@'localhost' IDENTIFIED BY 'password1';GRANT ALL PRIVILEGES ON wp_cli_test_scaffold.* TO 'wp_cli_test'@'localhost' IDENTIFIED BY 'password1';"
 
       - name: Run test suite
         run: composer test
