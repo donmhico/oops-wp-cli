@@ -16,17 +16,6 @@ use DonMhico\OopsCommand\Abstracts\AbstractCommand;
  */
 class OopsCommand extends AbstractCommand {
 	/**
-	 * Returns the namespace of the sub commands to be loaded.
-	 *
-	 * @since 0.0.1
-	 *
-	 * @return string
-	 */
-	public function get_extended_namespace() {
-		return __NAMESPACE__ . '\\SubCommand';
-	}
-
-	/**
 	 * Perform the command
 	 *
 	 * @since 0.0.1

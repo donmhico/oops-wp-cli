@@ -127,4 +127,34 @@ abstract class AbstractCommand implements ExtensibleInterface, CallableInterface
 			}
 		}
 	}
+
+	/**
+	 * Get the namespace of the extended classes to be loaded.
+	 *
+	 * This is use to get the fully qualified class name of the sub commands
+	 * and args that will autoload.
+	 *
+	 * Command autoloads SubCommands.
+	 * SubCommands autoloads Args.
+	 *
+	 * @since 0.0.1
+	 * @return string
+	 * @throws \Exception
+	 */
+	public function get_extended_namespace() : string {
+		$calling_class           = get_class( $this );
+		$reflection              = new \ReflectionClass( $calling_class );
+		$calling_class_namespace = $reflection->getNamespaceName();
+
+		if ( $this instanceof AbstractSubCommand ) {
+			$calling_class_namespace .= '\\Arg';
+		} elseif ( $this instanceof AbstractCommand ) {
+			$calling_class_namespace .= '\\SubCommand';
+		} else {
+			throw new \Exception( 'The class should autoload something.' );
+		}
+
+		return $calling_class_namespace;
+	}
+
 }
