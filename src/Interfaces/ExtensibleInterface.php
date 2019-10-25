@@ -13,5 +13,5 @@ namespace DonMhico\OopsCommand\Interfaces;
  * @since 0.0.1
  */
 interface ExtensibleInterface {
-	public function get_extended_namespace();
+	public function get_extended_namespace() : string;
 }

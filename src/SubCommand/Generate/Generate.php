@@ -14,17 +14,6 @@ use DonMhico\OopsCommand\Abstracts\AbstractSubCommand;
  */
 class Generate extends AbstractSubCommand {
 	/**
-	 * Namespace for the \Args.
-	 *
-	 * @since 0.0.1
-	 *
-	 * @return string
-	 */
-	public function get_extended_namespace() {
-		return __NAMESPACE__ . '\\Arg';
-	}
-
-	/**
 	 * Perform the sub command
 	 *
 	 * @since 0.0.1
