@@ -60,12 +60,15 @@ abstract class AbstractCommand implements ExtensibleInterface, CallableInterface
 	 * the appropriate class to handle the command.
 	 *
 	 * @since 0.0.1
-	 * @param array $args
-	 * @param array $assoc_args
+	 * @param array $args Passed $args in WP CLI.
+	 * @param array $assoc_args Passed $assoc_args in WP CLI.
 	 * @throws \WP_CLI\ExitException
 	 */
 	public function __invoke( array $args, array $assoc_args ) {
-		$this->load_extends( $args, $assoc_args );
+		$this->args       = $args;
+		$this->assoc_args = $assoc_args;
+
+		$this->load_extends();
 	}
 
 	/**
@@ -73,18 +76,12 @@ abstract class AbstractCommand implements ExtensibleInterface, CallableInterface
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param array|null $args Passed $args in WP CLI.
-	 * @param array|null $assoc_args Passed $assoc_args in WP CLI.
 	 * @throws \WP_CLI\ExitException
 	 */
-	protected function load_extends( array $args = null, array $assoc_args = null ) {
-		if ( null !== $args && null !== $assoc_args ) {
-			$this->args       = $args;
-			$this->assoc_args = $assoc_args;
-		}
-
-		if ( empty( $this->args ) ) {
-			// No sub command given.
+	protected function load_extends() {
+		// Invoke call() directly if no $args is provided
+		// or the current instance is already an AbstractArg.
+		if ( empty( $this->args ) || $this instanceof AbstractArg ) {
 			$this->call();
 			return;
 		} else {
@@ -102,16 +99,10 @@ abstract class AbstractCommand implements ExtensibleInterface, CallableInterface
 					$command_fully_qualified_class .= "\\{$command_class_string}";
 				}
 
-				// Dynamically call the class responsible for the command and sub command.
+				// Dynamically call the class responsible for the sub command and arg.
 				$sub_command = new $command_fully_qualified_class();
+				$this->init_sub_command( $sub_command );
 
-				if ( $sub_command instanceof ExtensibleInterface ) {
-					$sub_command->load_extends( $this->args, $this->assoc_args );
-				} elseif ( $sub_command instanceof CallableInterface ) {
-					$sub_command->call();
-				} else {
-					throw new \TypeError();
-				}
 			} catch ( \TypeError $type_error ) {
 				\WP_CLI::error( $command_class_string . ' is not a command.' );
 			} catch ( \Throwable $throwable ) {
@@ -125,6 +116,15 @@ abstract class AbstractCommand implements ExtensibleInterface, CallableInterface
 				 */
 				\WP_CLI::error( "'{$command_string}' sub command not found!" );
 			}
+		}
+	}
+
+	public function init_sub_command( AbstractCommand $sub_command ) {
+		$sub_command->args       = $this->args;
+		$sub_command->assoc_args = $this->assoc_args;
+
+		if ( $sub_command instanceof ExtensibleInterface ) {
+			$sub_command->load_extends();
 		}
 	}
 

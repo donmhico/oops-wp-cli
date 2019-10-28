@@ -4,7 +4,6 @@ require_once VENDOR_DIR . '/autoload.php';
 require_once WP_CLI_ROOT . '/php/utils.php';
 
 if ( ! function_exists( 'wpcli_tests_include_config' ) ) {
-	var_dump( 'mico' );
 	function wpcli_tests_include_config( array $config_filenames = [] ) {
 		$config_filename = false;
 		foreach ( $config_filenames as $filename ) {
@@ -20,7 +19,6 @@ if ( ! function_exists( 'wpcli_tests_include_config' ) ) {
 			$pattern = '/bootstrap="(?P<bootstrap>.*)"/';
 			$result  = preg_match( $pattern, $config, $matches );
 			if ( isset( $matches['bootstrap'] ) && file_exists( $matches['bootstrap'] ) ) {
-				var_dump( 'mico' );
 				include_once PACKAGE_ROOT . '/' . $matches['bootstrap'];
 			}
 		}
