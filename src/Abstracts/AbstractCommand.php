@@ -119,6 +119,14 @@ abstract class AbstractCommand implements ExtensibleInterface, CallableInterface
 		}
 	}
 
+	/**
+	 * Initialize the "Sub Command" and load the "Extensible" if necessary.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param AbstractCommand $sub_command
+	 * @throws \WP_CLI\ExitException
+	 */
 	public function init_sub_command( AbstractCommand $sub_command ) {
 		$sub_command->args       = $this->args;
 		$sub_command->assoc_args = $this->assoc_args;
